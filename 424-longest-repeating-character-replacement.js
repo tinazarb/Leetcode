@@ -35,3 +35,30 @@ var characterReplacement = function (s, k) {
   }
   return res;
 };
+
+//Time: O(n)
+//Space: O(n)
+
+var characterReplacement = function (s, k) {
+  let count = {};
+  let res = 0;
+
+  let left = 0;
+
+  for (let right in s) {
+    count[s[right]] = count[s[right]] + 1 || 1;
+
+    let maxVal = Math.max(...Object.values(count));
+    console.log(maxVal);
+    while (right - left + 1 - maxVal > k) {
+      count[s[left]] -= 1;
+      left += 1;
+    }
+
+    res = Math.max(res, right - left + 1);
+  }
+  return res;
+};
+
+//Time: O(26 * n) = O(n)
+//Space: O(n)
