@@ -27,6 +27,7 @@
  * @param {string} t
  * @return {string}
  */
+//Solution 1
 var minWindow = function (s, t) {
   let mapT = {};
   for (let char of t) {
@@ -58,4 +59,60 @@ var minWindow = function (s, t) {
     r++;
   }
   return result;
+};
+
+//Solution 2
+var minWindow = function (s, t) {
+  if (t == '') return '';
+
+  let countT = {},
+    window = {};
+
+  for (let i = 0; i < t.length; i++) {
+    if (!countT[t[i]]) {
+      countT[t[i]] = 1;
+    } else {
+      countT[t[i]]++;
+    }
+  }
+
+  let have = 0;
+  let need = Object.keys(countT).length;
+  let res = [-1, -1];
+  let resLen = Infinity;
+  let l = 0;
+
+  for (let r = 0; r < s.length; r++) {
+    let c = s[r];
+    if (!window[c]) {
+      window[c] = 1;
+    } else {
+      window[c]++;
+    }
+
+    if (c in countT && window[c] == countT[c]) {
+      have += 1;
+    }
+
+    while (have == need) {
+      // update our result
+      if (r - l + 1 < resLen) {
+        res = [l, r];
+        resLen = r - l + 1;
+      }
+      //pop from the left of our window - minimize it
+      window[s[l]] -= 1;
+      if (countT[s[l]] != undefined && window[s[l]] < countT[s[l]]) {
+        have -= 1;
+      }
+      l += 1;
+    }
+  }
+  [l, r] = res;
+
+  if (resLen != Infinity) {
+    return s.slice(l, r + 1);
+  } else {
+    return '';
+  }
 };
