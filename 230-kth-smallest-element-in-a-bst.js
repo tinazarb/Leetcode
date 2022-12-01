@@ -34,10 +34,12 @@ var kthSmallest = function (root, k) {
   let array = [];
   dfs(root);
   return array[k - 1];
+
   function dfs(root) {
-    if (!root) {
-      return;
-    }
+    if (!root) return;
+
+    if (array.length == k) return;
+
     dfs(root.left);
     array.push(root.val);
     dfs(root.right);
